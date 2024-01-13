@@ -1,8 +1,9 @@
-import React from "react";
+'use client'
 import styles from "./links.module.css";
-
+import { useState } from "react";
 import NavLinks from "./navLinks/navLinks";
 const Links = () => {
+  const [open, setOpen] = useState(false)
   const links = [
     {
       title: "Homepage",
@@ -27,17 +28,27 @@ const Links = () => {
   const isAdmin = true;
 
   return (
-    <div className={styles.links}>
-      {links.map((link) => (
-        <NavLinks item={link} key={link.title} />
-      ))}
-      {session ? (
-        <>
-          {isAdmin && <NavLinks item={{ title: "Admin", path: "/admin" }} />}
-          <button className={styles.logout}>Logout</button>
-        </>
-      ) : (
-        <NavLinks item={{ title: "Login", path: "/login" }} />
+    <div className={styles.container}>
+      <div className={styles.links}>
+        {links.map((link) => (
+          <NavLinks item={link} key={link.title} />
+        ))}
+        {session ? (
+          <>
+            {isAdmin && <NavLinks item={{ title: "Admin", path: "/admin" }} />}
+            <button className={styles.logout}>Logout</button>
+          </>
+        ) : (
+          <NavLinks item={{ title: "Login", path: "/login" }} />
+        )}
+      </div>
+      <button className={styles.menuButton} onClick={()=> setOpen(!open)}>Menu</button>
+      {open && (
+        <div className={styles.mobileLinks}>
+          {links.map((link) => (
+            <NavLinks item={link} key={link.title}/>
+          ))}
+        </div>
       )}
     </div>
   );
